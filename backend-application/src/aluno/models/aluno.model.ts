@@ -1,4 +1,6 @@
 import { Model } from 'objection';
+import { Documento } from 'src/documento/models/documento.model';
+import { Matricula } from 'src/matricula/models/matricula.model';
 
 export class Aluno extends Model {
   static tableName = 'aluno';
@@ -11,5 +13,23 @@ export class Aluno extends Model {
   aluno_CEP!: number;
   documento_id!: number;
 
-  static relationMappings = {};
+  static relationMappings = {
+    documento: {
+      relation: Model.HasOneRelation,
+      modelClass: Documento,
+      join: {
+        from: 'aluno.documento_id',
+        to: 'documento.id',
+      },
+    },
+
+    matricula: {
+      relation: Model.HasManyRelation,
+      modelClass: Matricula,
+      join: {
+        from: 'aluno.id',
+        to: 'matricula.aluno_id',
+      },
+    },
+  };
 }
