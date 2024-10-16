@@ -23,6 +23,30 @@ export async function up(knex: Knex): Promise<void> {
   });
 
   await knex.schema
+  .createTable('modalidade', (table) => {
+    table.increments('id').primary();
+    table.string('modalidade_name').notNullable();
+  });
+
+  await knex.schema
+  .createTable('tipo_curso', (table) => {
+    table.increments('id').primary();
+    table.string('tipo_curso_name').notNullable();
+  });
+
+  await knex.schema
+  .createTable('curso', (table) => {
+    table.increments().primary();
+    table.string('curso_name').notNullable();
+    table.integer('tipo_curso_id').unsigned();
+    table.integer('modalidade_id').unsigned();
+    table.integer('curso_valor').notNullable();
+    table.integer('curso_mensalidade').notNullable();
+  });
+
+  ///////////////////////////
+  
+  await knex.schema
   .alterTable('aluno', (table) => {
     table.foreign('documento_id').references('id').inTable('documento').onDelete('SET NULL');
   });
@@ -30,6 +54,12 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema
   .alterTable('documento', (table) => {
     table.foreign('aluno_id').references('id').inTable('aluno').onDelete('CASCADE');
+  });
+
+  await knex.schema
+  .alterTable('curso', (table) => {
+    table.foreign('tipo_curso_id').references('id').inTable('tipo_curso').onDelete('CASCADE');
+    table.foreign('modalidade_id').references('id').inTable('modalidade').onDelete('CASCADE');
   });
 }
 
