@@ -5,7 +5,6 @@ export class Documento extends Model {
   static tableName = 'documento';
   id!: number;
   aluno_id!: number;
-  documento_number!: number;
   documento_desc!: string;
   documento_image!: string;
 

@@ -7,11 +7,12 @@ export class Aluno extends Model {
   id!: number;
   aluno_nome!: string;
   aluno_email!: string;
-  aluno_telefone!: number;
-  aluno_CPF!: number;
+  aluno_telefone!: string;
+  aluno_CPF!: string;
   aluno_nascimento!: Date;
-  aluno_CEP!: number;
-  documento_id!: number;
+  aluno_CEP!: string;
+  documento_number!: string;
+  documento_id?: string;
 
   static relationMappings = {
     documento: {
