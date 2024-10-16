@@ -14,5 +14,13 @@ export class CursoService {
       type_curso_id
     );
     return byType;
-  }
+  };
+
+  async findByModalityCurso(modalidade_id: number): Promise<Curso[]> {
+    const byModality = await Curso.query().where(
+      'modalidade_id',
+      modalidade_id
+    );
+    return byModality;
+  };
 }
