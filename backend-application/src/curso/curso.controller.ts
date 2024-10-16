@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
 import { CursoService } from "./curso.service";
 import { Curso } from "./models/curso.model";
 
@@ -9,5 +9,10 @@ export class CursoController {
   @Get()
   async findAllCurso(): Promise<Curso[]> {
     return this.cursoService.findAllCurso();
+  };
+
+  @Get('bytype/:type_curso_id')
+  async findByTypeCurso(@Param('type_curso_id') type_curso_id: number): Promise<Curso[]> {
+    return this.cursoService.findByTypeCurso(type_curso_id);
   };
 };

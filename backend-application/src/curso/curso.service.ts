@@ -7,4 +7,12 @@ export class CursoService {
     const allCursos = await Curso.query();
     return allCursos; 
   };
+
+  async findByTypeCurso(type_curso_id: number): Promise<Curso[]> {
+    const byType = await Curso.query().where(
+      'tipo_curso_id',
+      type_curso_id
+    );
+    return byType;
+  }
 }
