@@ -85,10 +85,32 @@ export async function down(knex: Knex): Promise<void> {
   await knex.schema.alterTable('aluno', (table) => {
     table.dropForeign(['documento_id']);
   });
+
+  await knex.schema.alterTable('curso', (table) => {
+    table.dropForeign(['tipo_curso_id']);
+    table.dropForeign(['modalidade_id']);
+  });
+
+  await knex.schema.alterTable('matricula', (table) => {
+    table.dropForeign(['aluno_id']);
+    table.dropForeign(['curso_id']);
+  });
   
   await knex.schema
   .dropTable('aluno');
 
   await knex.schema
   .dropTable('documento');
+
+  await knex.schema
+  .dropTable('curso');
+
+  await knex.schema
+  .dropTable('tipo_curso');
+
+  await knex.schema
+  .dropTable('modalidade');
+
+  await knex.schema
+  .dropTable('matricula');
 }
