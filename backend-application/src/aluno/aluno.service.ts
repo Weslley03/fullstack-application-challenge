@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { Aluno } from './models/aluno.model';
 import { sign } from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 type ResponseBody = {
   status: boolean;
@@ -15,7 +17,6 @@ async function generateToken(aluno_id: string): Promise<string> {
     throw new Error(
       'JWT_SECRET_KEY is not defined in the environment variables',
     );
-
   const payload = { aluno_id };
   const token = sign(payload, JWT_SECRET_KEY, {
     expiresIn: '1h',
