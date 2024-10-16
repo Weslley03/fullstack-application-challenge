@@ -36,12 +36,19 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema
   .createTable('curso', (table) => {
-    table.increments().primary();
+    table.increments('id').primary();
     table.string('curso_name').notNullable();
     table.integer('tipo_curso_id').unsigned();
     table.integer('modalidade_id').unsigned();
     table.integer('curso_valor').notNullable();
     table.integer('curso_mensalidade').notNullable();
+  });
+
+  await knex.schema
+  .createTable('matricula', (table) => {
+    table.increments('id').primary();
+    table.integer('aluno_id').unsigned();
+    table.integer('curso_id').unsigned();
   });
 
   ///////////////////////////
@@ -60,6 +67,12 @@ export async function up(knex: Knex): Promise<void> {
   .alterTable('curso', (table) => {
     table.foreign('tipo_curso_id').references('id').inTable('tipo_curso').onDelete('CASCADE');
     table.foreign('modalidade_id').references('id').inTable('modalidade').onDelete('CASCADE');
+  });
+
+  await knex.schema
+  .alterTable('matricula', (table) => {
+    table.foreign('aluno_id').references('id').inTable('aluno').onDelete('CASCADE');
+    table.foreign('curso_id').references('id').inTable('curso').onDelete('CASCADE');
   });
 }
 
