@@ -39,7 +39,12 @@
 
       <div class="form-group">
         <label for="aluno_CEP">CEP:</label>
-        <input type="text" v-model="formData.aluno_CEP" required />
+        <input 
+        type="text" 
+        v-model="formData.aluno_CEP" 
+        @change="handleCepChange" 
+        required />
+        <p v-if="cepError" style="color: red;">{{ this.cepError }}</p>
       </div>
 
       <div class="form-group">
@@ -49,8 +54,11 @@
 
       <div class="form-group">
         <label for="documento_desc">descrição do documento:</label>
-        <input name="documentoInput" type="radio" v-model="formData.documento_desc" value="RG" required /> RG
-        <input name="documentoInput" type="radio" v-model="formData.documento_desc" value="CNH" required /> CNH
+        <select id="documentoInput" v-model="formData.documento_desc" required> 
+          <option disabled value="">Selecione</option>
+          <option value="CNH">CNH</option>
+          <option value="RG">RG</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -64,10 +72,13 @@
 </template>
 
 <script>
+import { cepValidate } from '~/composables/useMatricula.js';
+
 export default {
   data() {
     return {
       curso: null,
+      cepError: null,
       formData: {
         aluno_nome: '',
         aluno_email: '',
@@ -77,7 +88,7 @@ export default {
         aluno_CEP: '',
         documento_number: '',
         documento_desc: '',
-        documento_image: '', 
+        documento_image: '',
       },
     };
   },
@@ -89,6 +100,23 @@ export default {
   },
   methods: {
     
+    async handleCepChange() {
+      const formattedCep = this.formData.aluno_CEP.replace(/\D/g, '');
+
+      if (formattedCep.length !== 8) {
+        this.cepError = 'O CEP deve ter 8 dígitos.';
+        return;
+      }
+
+      const isValid = await cepValidate(formattedCep);
+
+      if (!isValid) {
+        this.cepError = 'CEP inválido. Verifique e tente novamente.';
+      } else {
+        this.cepError = '';
+      }
+    },
+
     handleFileUpload(event) {
       const file = event.target.files[0];
       const reader = new FileReader();
