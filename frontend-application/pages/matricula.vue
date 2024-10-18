@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { cepValidate } from '~/composables/useMatricula.js';
+import { cepValidate, userCreate, documentUserCreate } from '~/composables/useMatricula.js';
 
 export default {
   data() {
@@ -127,65 +127,23 @@ export default {
     },
 
     async handleSubmit() {
-      const userData = {
-        aluno_nome: this.formData.aluno_nome,
-        aluno_email: this.formData.aluno_email,
-        aluno_telefone: this.formData.aluno_telefone,
-        aluno_CPF: this.formData.aluno_CPF,
-        aluno_nascimento: this.formData.aluno_nascimento,
-        aluno_CEP: this.formData.aluno_CEP,
-        documento_number: this.formData.documento_number,
-      }; 
-      try{
-      const response = await fetch('http://localhost:3001/alunos', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(userData)
-      });
 
-      if (response.ok) {
-        const data = await response.json();
-        const token = data.token;
+      const userToken = await userCreate(this.formData);
 
-        const documentoData = {
-          documento_desc: this.formData.documento_desc,
-          documento_image: this.formData.documento_image,
-        }
+      await documentUserCreate(this.formData, userToken);
 
-        const responseDocument = await fetch("http://localhost:3001/documento", {
-        method: "POST", 
-        headers: {
-          "Content-Type": "application/json", 
-            "Authorization": `Bearer ${token}` 
-          },
-        body: JSON.stringify(documentoData) 
-        })
+      const curso_id = this.curso.id
 
-        if(responseDocument.ok) {
-          const curso_id = this.curso.id
-          
-          const dataMatricula = {
-            curso_id: curso_id
-          };
-          
-          await fetch("http://localhost:3001/matricula", {
-          method: "POST",
-          headers: {
-          "Content-Type": "application/json", 
-            "Authorization": `Bearer ${token}` 
-          },
-          body: JSON.stringify(dataMatricula)
-        })
-        alert('matricula OK, pode conferir');
-        }
+      const processOk = matriculaCreate(curso_id, userToken);
+
+      if(processOk) {
+        alert('MATRICULA OK, PODE CONFERIR');
+      } else {
+        alert('deu ruim...');
       }
-    }catch(err){
-      console.log(err)
-    }
     },
   },
+
 };
 </script>
 
