@@ -19,7 +19,7 @@ export async function up(knex: Knex): Promise<void> {
     table.increments('id').primary();
     table.integer('aluno_id').unsigned().notNullable();
     table.string('documento_desc').notNullable();
-    table.string('documento_image').notNullable();
+    table.text('documento_image', 'longtext').notNullable();
   });
 
   await knex.schema
