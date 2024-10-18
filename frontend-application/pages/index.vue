@@ -3,114 +3,82 @@
     <div class="text-center">
       <h2>Seu caminho para o sucesso começa aqui. Escolha seu curso!</h2>
     </div>
+    <MyCarrossel />
 
-    <div id="carousel" class="mt-3">
-      <div :style="{ display: 'flex', transition: 'transform 0.5s ease', transform: `translateX(-{${currentIndex * 100}}%)` }">
-        <div 
-          class="carousel-item" 
-          v-for="(slide, index) in slides" 
-          :key="index" 
-          :class="{ active: index === currentIndex }"
-        >
-          <img :src="slide.src" :alt="slide.alt" />
-          <div class="carousel-caption">
-            <h3>{{ slide.nameCurso }}</h3>
-          </div>
+    <div>
+      <AllCursos
+      :propData="{ title: 'todos os cursos', req: 'cursos' }"
+      @responseChildComponent="handleSelected"
+      />
+
+      <Card 
+      :propData="{ title: 'tipo do curso', option1: 'pressencial', option2: 'EAD', req: 'cursos/bytype' }" 
+      @responseChildComponent="handleSelected"
+      />
+
+      <Card 
+      :propData="{ title: 'modalidade do curso', option1: 'graduação', option2: 'pós graduação', req: 'cursos/bymodality' }" 
+      @responseChildComponent="handleSelected"
+      />
+    </div>
+
+    <div>
+      <div v-if="cursos.length > 0">
+        <h3 class="text-center" >resultado da seleção:</h3>
+        <div class="cards-container">
+          <InfoCard 
+          v-for="(curso, index) in cursos"
+          :key="index"
+          :cursoData="curso"
+          />
         </div>
       </div>
-      
-      <button @click="prevSlide" class="carousel-control" id="prev"> ❮ </button>
-      <button @click="nextSlide" class="carousel-control" id="next"> ❯ </button>
-    </div>
-    
+    </div>  
+
   </div>
 </template>
 
 <script>
+import MyCarrossel from '../components/myCarrossel.vue';
+import Card from '~/components/FilterCard.vue';
+import AllCursos from '~/components/AllCursos.vue';
+import InfoCard from '~/components/InfoCard.vue';
+
 export default {
+  
+  components: {
+    MyCarrossel,
+    AllCursos,
+    Card,
+    InfoCard,
+  },
+
   data() {
     return {
-      currentIndex: 0,
-      slides: [
-        { src: '/med.png', nameCurso: 'MEDICINA', alt: 'imagem 01' },
-        { src: '/adm.png', nameCurso: 'ADM', alt: 'imagem 02' },
-        { src: '/ads.png', nameCurso: 'ADS', alt: 'imagem 03' },
-      ],
-    };
+      cursos: [],
+    }
   },
+
   methods: {
-    nextSlide() {
-      this.currentIndex = (this.currentIndex + 1) % this.slides.length;
-    },
-    prevSlide() {
-      this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
-    },
-  },
+    handleSelected(data) {
+      this.cursos = 'carregando..'
+      this.cursos = data.result;
+    }
+  }
+
 };
 </script>
 
 <style scoped>
-.mt-5 {
-  margin-top: 3rem;
-}
-
-#carousel {
-  position: relative;
-  width: 40%;
-  height: 60%;
-  overflow: hidden;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    width: 90%;
+  .mt-5 {
+    margin-top: 3rem;
   }
-}
 
-.carousel-item {
-  display: flex;
-  min-width: 100%;
-  height: 40vh;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  opacity: 0;
-}
-
-.active {
-  opacity: 1;
-}
-
-.carousel-control {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.5);
-  border: none;
-  cursor: pointer;
-}
-
-#prev {
-  left: 10px;
-}
-
-#next {
-  right: 10px;
-}
-
-/* Adicione isso para centralizar a imagem */
-img {
-  width: 100%; /* Ajusta a imagem para ocupar toda a largura do carrossel */
-  height: auto; /* Mantém a proporção da imagem */
-}
-
-.carousel-caption {
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 5px;
-  border-radius: 5px;
-  text-align: center;
-  width: 50%;
-}
-
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+  }
 </style>
