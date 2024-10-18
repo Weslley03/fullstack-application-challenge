@@ -9,7 +9,7 @@ Para manter a consistência e a qualidade do código, foi implementado o ESLint,
 
 **Modelagem de dados e Relações com MER**
 
-![image](https://github.com/user-attachments/assets/db909fef-b7ea-4f0d-9ed0-3df232c569da)
+![Modelo de Entidade-Relacionamento](./backend-application/MER.png)
 
 Para o armazenamento de dados da aplicação, foi utilizado um banco de dados relacional e o MySQL Workbench para administração. A escolha por um banco relacional se deu pela necessidade de garantir integridade referencial e a possibilidade de realizar consultas complexas de forma eficiente. Para facilitar a interação com o banco de dados, foi utilizado o ObjectionJS como ORM, proporcionando uma interface intuitiva e simplificada para a manipulação das tabelas e a realização de queries complexas.
 A modelagem de dados foi elaborada utilizando um MER, o que permitiu identificar de forma clara as entidades e seus relacionamentos.
