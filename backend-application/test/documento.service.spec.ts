@@ -1,4 +1,3 @@
-import { Patch } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Aluno } from 'src/aluno/models/aluno.model';
 import { DocumentoService } from 'src/documento/documento.service';
@@ -28,7 +27,7 @@ describe('DocumentService', () => {
   });
 
   describe('createDocumento', () => {
-    
+
     it('should create a document and update the aluno with document ID', async () => {
       const createDocumentoDto: CreateDocumentoDto = {
         documento_desc: 'CNH',
