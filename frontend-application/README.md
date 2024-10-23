@@ -72,4 +72,5 @@ yarn preview
 bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+![Captura de tela 2024-10-18 181258](https://github.com/user-attachments/assets/c88ab3ea-1ace-4ce6-abde-e44fc1ab0493)
+
